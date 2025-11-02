@@ -18,7 +18,6 @@ export default function TestesAeronavePage() {
   }, []);
 
   const abrirTeste = (nomeTeste: string) => {
-    // Só gerente pode abrir testes
     if (userRole === 'gerente') {
       setTesteAtivo(nomeTeste);
     } else {
@@ -35,7 +34,6 @@ export default function TestesAeronavePage() {
       <Navbar />
 
       <div className={Style.conteudo}>
-        {/* Cabeçalho */}
         <div className={Style.header}>
           <button 
             className={Style.botaoVoltar} 
@@ -47,7 +45,6 @@ export default function TestesAeronavePage() {
           <p className={Style.subtitulo}>Modelo experimental de aeronave elétrica</p>
         </div>
 
-        {/* Barra de progresso */}
         <div className={Style.progressoGeral}>
           <h3>Progresso: 65%</h3>
           <div className={Style.barraProgresso}>
@@ -55,7 +52,6 @@ export default function TestesAeronavePage() {
           </div>
         </div>
 
-        {/* Etapas e testes */}
         <div className={Style.etapas}>
           <div className={Style.etapa}>
             <h3>Teste Elétrico</h3>
@@ -100,7 +96,6 @@ export default function TestesAeronavePage() {
           </div>
         </div>
 
-        {/* Modal de teste */}
         {testeAtivo && (
           <div className={Style.modalOverlay}>
             <div className={Style.modal}>

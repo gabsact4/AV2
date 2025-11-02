@@ -71,7 +71,6 @@ export default function Detalhes() {
             </div>
           </div>
 
-          {/* Card da aeronave */}
           <div
             className={Style["grid-item"]}
             style={{ cursor: "default", marginBottom: "30px" }}
@@ -79,7 +78,6 @@ export default function Detalhes() {
             <Card titulo="Aeronave XP-01" status="Teste Elétrico" />
           </div>
 
-          {/* Botões de ação com controle de acesso */}
           <div
             style={{
               display: "grid",
@@ -95,7 +93,6 @@ export default function Detalhes() {
               Gerenciar Peças
             </button>
             
-            {/* Só gerente vê botão de testes */}
             {userRole === 'gerente' && (
               <button 
                 className={StyleButton.button} 
@@ -105,13 +102,11 @@ export default function Detalhes() {
               </button>
             )}
             
-            {/* Só funcionário vê botão de avançar etapa */}
             {userRole === 'funcionario' && (
               <button className={StyleButton.button}>Avançar Etapa</button>
             )}
           </div>
 
-          {/* Informações da aeronave */}
           <div
             style={{
               background: "white",
