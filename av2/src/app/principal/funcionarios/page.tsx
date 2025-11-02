@@ -2,8 +2,16 @@
 
 import Sidebar from "../component/Navbar";
 import Style from "./Funcionario.module.css";
+import { useEffect, useState } from "react";
 
 export default function Funcionario() {
+  const [userRole, setUserRole] = useState<string>('');
+
+  useEffect(() => {
+    const role = localStorage.getItem('userRole') || '';
+    setUserRole(role);
+  }, []);
+
   return (
     <div className={Style.pagina}>
       <Sidebar />
@@ -16,10 +24,12 @@ export default function Funcionario() {
             placeholder="Buscar funcionário, cargo ou usuário..."
           />
           
-          <button className={Style.addButton}>
-            <span>+</span>
-            Cadastrar Funcionário
-          </button>
+          {userRole === 'administrador' && (
+            <button className={Style.addButton}>
+              <span>+</span>
+              Cadastrar Funcionário
+            </button>
+          )}
         </div>
 
         <div className={Style.tabelaContainer}>
@@ -31,7 +41,7 @@ export default function Funcionario() {
                 <th>Cargo</th>
                 <th>Usuário</th>
                 <th>Status do Serviço</th>
-                <th>Ações</th>
+                {userRole === 'administrador' && <th>Ações</th>}
               </tr>
             </thead>
             <tbody>
@@ -45,16 +55,18 @@ export default function Funcionario() {
                     Em Andamento
                   </span>
                 </td>
-                <td>
-                  <div className={Style.acoes}>
-                    <button className={`${Style.acaoButton} ${Style.editar}`}>
-                      Editar
-                    </button>
-                    <button className={`${Style.acaoButton} ${Style.excluir}`}>
-                      Excluir
-                    </button>
-                  </div>
-                </td>
+                {userRole === 'administrador' && (
+                  <td>
+                    <div className={Style.acoes}>
+                      <button className={`${Style.acaoButton} ${Style.editar}`}>
+                        Editar
+                      </button>
+                      <button className={`${Style.acaoButton} ${Style.excluir}`}>
+                        Excluir
+                      </button>
+                    </div>
+                  </td>
+                )}
               </tr>
 
               <tr>
@@ -67,16 +79,18 @@ export default function Funcionario() {
                     Concluído
                   </span>
                 </td>
-                <td>
-                  <div className={Style.acoes}>
-                    <button className={`${Style.acaoButton} ${Style.editar}`}>
-                      Editar
-                    </button>
-                    <button className={`${Style.acaoButton} ${Style.excluir}`}>
-                      Excluir
-                    </button>
-                  </div>
-                </td>
+                {userRole === 'administrador' && (
+                  <td>
+                    <div className={Style.acoes}>
+                      <button className={`${Style.acaoButton} ${Style.editar}`}>
+                        Editar
+                      </button>
+                      <button className={`${Style.acaoButton} ${Style.excluir}`}>
+                        Excluir
+                      </button>
+                    </div>
+                  </td>
+                )}
               </tr>
             </tbody>
           </table>

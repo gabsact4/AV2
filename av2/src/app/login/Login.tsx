@@ -9,13 +9,31 @@ export default function Login() {
   const [senha, setSenha] = useState("");
   const router = useRouter();
 
-  const navegar = () => {
-    router.push("/principal"); 
+  const fazerLogin = () => {
+    let userRole = 'funcionario';
+
+    if (usuario === "admin" && senha === "admin123") {
+      userRole = 'administrador';
+    } else if (usuario === "gerente" && senha === "gerente123") {
+      userRole = 'gerente';
+    } else if (usuario === "tecnico" && senha === "tecnico123") {
+      userRole = 'tecnico';
+    } else if (usuario === "funcionario" && senha === "func123") {
+      userRole = 'funcionario';
+    } else {
+      alert("Credenciais inválidas! Use: admin/admin123, gerente/gerente123, tecnico/tecnico123, funcionario/func123");
+      return;
+    }
+
+    localStorage.setItem('userRole', userRole);
+    localStorage.setItem('userName', usuario);
+
+    router.push("/principal");
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
-      navegar();
+      fazerLogin();
     }
   };
 
@@ -51,7 +69,7 @@ export default function Login() {
 
       <button 
         className={styles.button} 
-        onClick={navegar}
+        onClick={fazerLogin}
       >
         Entrar
       </button>

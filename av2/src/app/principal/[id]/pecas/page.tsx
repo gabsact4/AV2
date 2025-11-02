@@ -3,22 +3,30 @@
 import Navbar from "../../component/Navbar";
 import Style from "./Pecas.module.css";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function PecasAeronavePage() {
   const router = useRouter();
+  const [userRole, setUserRole] = useState<string>('');
+
+  useEffect(() => {
+    const role = localStorage.getItem('userRole') || '';
+    setUserRole(role);
+  }, []);
 
   return (
     <div className={Style.pagina}>
       <Navbar />
 
-      {/* Botões fixos no topo */}
       <div className={Style.botoesTopo}>
-        <button 
-          className={Style.botaoTeste} 
-          onClick={() => router.push("/principal/${nave.id}")} // navegar para a página de teste
-        >
-          Ir para Testes
-        </button>
+        {userRole === 'gerente' && (
+          <button 
+            className={Style.botaoTeste} 
+            onClick={() => router.push("/principal/1/teste")}
+          >
+            Ir para Testes
+          </button>
+        )}
         <button className={Style.botaoRelatorio}>Relatório</button>
       </div>
 
@@ -26,14 +34,13 @@ export default function PecasAeronavePage() {
         <div className={Style.header}>
           <button 
             className={Style.botaoVoltar} 
-            onClick={() => router.back()} // voltar para a página anterior
+            onClick={() => router.back()}
           >
             ← Voltar
           </button>
           <h1 className={Style.titulo}>Peças da Aeronave: XP-01</h1>
         </div>
 
-        {/* Estatísticas */}
         <div className={Style.stats}>
           <div className={Style.statCard}>
             <h3>Total de Peças</h3>
@@ -49,7 +56,6 @@ export default function PecasAeronavePage() {
           </div>
         </div>
 
-        {/* Formulário visual */}
         <div className={Style.formContainer}>
           <h2>Adicionar Nova Peça</h2>
           <div className={Style.form}>
@@ -70,12 +76,10 @@ export default function PecasAeronavePage() {
           </div>
         </div>
 
-        {/* Busca */}
         <div className={Style.buscaContainer}>
           <input type="text" placeholder="Buscar peças..." className={Style.inputBusca} />
         </div>
 
-        {/* Lista de peças */}
         <div className={Style.listaPecas}>
           <h2>Peças da Aeronave (3)</h2>
           <div className={Style.gridPecas}>

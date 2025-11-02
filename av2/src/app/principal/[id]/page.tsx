@@ -5,10 +5,17 @@ import Card from "../Card";
 import Style from "../Menu.module.css";
 import StyleButton from "./AeroNave.module.css";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function Detalhes() {
   const router = useRouter();
-  const naveId = 1; // aqui você pega o id da aeronave dinamicamente se necessário
+  const naveId = 1;
+  const [userRole, setUserRole] = useState<string>('');
+
+  useEffect(() => {
+    const role = localStorage.getItem('userRole') || '';
+    setUserRole(role);
+  }, []);
 
   return (
     <div className={Style.pagina}>
@@ -72,7 +79,7 @@ export default function Detalhes() {
             <Card titulo="Aeronave XP-01" status="Teste Elétrico" />
           </div>
 
-          {/* Botões de ação */}
+          {/* Botões de ação com controle de acesso */}
           <div
             style={{
               display: "grid",
@@ -87,13 +94,21 @@ export default function Detalhes() {
             >
               Gerenciar Peças
             </button>
-            <button 
-              className={StyleButton.button} 
-              onClick={() => router.push(`/principal/${naveId}/teste`)}
-            >
-              Testes
-            </button>
-            <button className={StyleButton.button}>Avançar Etapa</button>
+            
+            {/* Só gerente vê botão de testes */}
+            {userRole === 'gerente' && (
+              <button 
+                className={StyleButton.button} 
+                onClick={() => router.push(`/principal/${naveId}/teste`)}
+              >
+                Testes
+              </button>
+            )}
+            
+            {/* Só funcionário vê botão de avançar etapa */}
+            {userRole === 'funcionario' && (
+              <button className={StyleButton.button}>Avançar Etapa</button>
+            )}
           </div>
 
           {/* Informações da aeronave */}
@@ -141,7 +156,7 @@ export default function Detalhes() {
                   <strong>Responsável:</strong> João Silva
                 </p>
                 <p>
-                  <strong>Usuário Logado:</strong> Maria Souza (Gerente)
+                  <strong>Usuário Logado:</strong> {localStorage.getItem('userName')} ({userRole})
                 </p>
               </div>
             </div>

@@ -1,19 +1,29 @@
 'use client';
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import Navbar from "../../component/Navbar";
 import Style from "./Testes.module.css";
 
 export default function TestesAeronavePage() {
   const router = useRouter();
-  const params = useParams(); // pega os parâmetros da rota
-  const idNave = params?.id; // o ID da aeronave da rota
-
+  const params = useParams();
+  const idNave = params?.id;
   const [testeAtivo, setTesteAtivo] = useState<null | string>(null);
+  const [userRole, setUserRole] = useState<string>('');
+
+  useEffect(() => {
+    const role = localStorage.getItem('userRole') || '';
+    setUserRole(role);
+  }, []);
 
   const abrirTeste = (nomeTeste: string) => {
-    setTesteAtivo(nomeTeste);
+    // Só gerente pode abrir testes
+    if (userRole === 'gerente') {
+      setTesteAtivo(nomeTeste);
+    } else {
+      alert("Apenas gerentes podem executar testes.");
+    }
   };
 
   const fecharTeste = () => {
