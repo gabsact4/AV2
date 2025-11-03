@@ -169,7 +169,6 @@
     font-weight: 500;
 }
 
-/* Testes */
 .testes {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -322,7 +321,6 @@
     font-size: 14px;
 }
 
-/* Modal */
 .modalOverlay {
     position: fixed;
     top: 0;
@@ -495,7 +493,6 @@
     transform: translateY(-2px);
 }
 
-/* Responsividade */
 @media (max-width: 768px) {
     .conteudo {
         padding: 10px;

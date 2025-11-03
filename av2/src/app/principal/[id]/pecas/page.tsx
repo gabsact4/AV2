@@ -55,7 +55,6 @@ export default function PecasAeronavePage() {
     setUserRole(role);
   }, []);
 
-  // Filtragem das peças por busca
   const pecasFiltradas = pecas.filter(
     (p) =>
       p.nome.toLowerCase().includes(busca.toLowerCase()) ||
@@ -63,7 +62,6 @@ export default function PecasAeronavePage() {
       p.localizacao.toLowerCase().includes(busca.toLowerCase())
   );
 
-  // Função para marcar como instalada
   const marcarInstalada = (id: number) => {
     setPecas((prev) =>
       prev.map((p) =>
@@ -78,7 +76,6 @@ export default function PecasAeronavePage() {
     );
   };
 
-  // Função para remover peça
   const removerPeca = (id: number) => {
     setPecas((prev) => prev.filter((p) => p.id !== id));
   };

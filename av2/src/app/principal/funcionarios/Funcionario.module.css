@@ -270,7 +270,6 @@
   to { transform: translateY(0); opacity: 1; }
 }
 
-/* Responsividade */
 @media (max-width: 500px) {
   .modal {
     width: 90%;

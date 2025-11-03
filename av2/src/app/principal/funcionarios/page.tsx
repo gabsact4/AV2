@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 export default function Funcionario() {
   const [userRole, setUserRole] = useState<string>('');
   const [busca, setBusca] = useState('');
-  const [showModal, setShowModal] = useState(false); // controla se o modal está aberto
+  const [showModal, setShowModal] = useState(false); 
   const [novoFuncionario, setNovoFuncionario] = useState({
     nome: "",
     cargo: "",
@@ -32,11 +32,10 @@ export default function Funcionario() {
     f.usuario.toLowerCase().includes(busca.toLowerCase())
   );
 
-  // Função chamada ao clicar em "Cadastrar Funcionário"
   const handleCadastrar = () => {
     console.log("Novo Funcionário:", novoFuncionario);
-    setShowModal(false); // fecha o modal
-    setNovoFuncionario({ nome: "", cargo: "", usuario: "", status: "Em Andamento" }); // limpa o formulário
+    setShowModal(false);
+    setNovoFuncionario({ nome: "", cargo: "", usuario: "", status: "Em Andamento" }); 
   };
 
   return (
@@ -110,7 +109,6 @@ export default function Funcionario() {
         </div>
       </div>
 
-      {/* Modal de cadastro */}
       {showModal && (
         <div className={Style.modalOverlay}>
           <div className={Style.modal}>
