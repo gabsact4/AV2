@@ -1,8 +1,16 @@
 'use client';
 import Style from "./Aeronave.module.css";
 import Sidebar from "../component/Navbar";
+import { useState } from "react";
 
 export default function CadastroAeronave() {
+  const [aeronave, setAeronave] = useState({
+    nome: "",
+    tipo: "comercial",
+    capacidade: 0,
+    alcance: 0,
+  });
+
   return (
     <div className={Style.container}>
       <Sidebar />
@@ -18,19 +26,27 @@ export default function CadastroAeronave() {
               id="nome"
               name="nome"
               placeholder="Nome do Projeto"
+              value={aeronave.nome}
               required
+              onChange={(e) =>
+                setAeronave({ ...aeronave, nome: e.target.value })
+              }
             />
           </div>
 
           <div className={Style.formGroup}>
-            <label htmlFor="tipo">Tipo *</label>
-            <input
-              type="text"
+            <label htmlFor="tipo">Tipo</label>
+            <select
               id="tipo"
               name="tipo"
-              placeholder="Ex: Comercial, Carga, Executivo"
-              required
-            />
+              value={aeronave.tipo}
+              onChange={(e) =>
+                setAeronave({ ...aeronave, tipo: e.target.value })
+              }
+            >
+              <option value="comercial">Comercial</option>
+              <option value="militar">Militar</option>
+            </select>
           </div>
 
           <div className={Style.formRow}>
@@ -42,6 +58,13 @@ export default function CadastroAeronave() {
                 name="capacidade"
                 min="0"
                 placeholder="0"
+                value={aeronave.capacidade}
+                onChange={(e) =>
+                  setAeronave({
+                    ...aeronave,
+                    capacidade: Number(e.target.value),
+                  })
+                }
               />
             </div>
 
@@ -53,11 +76,22 @@ export default function CadastroAeronave() {
                 name="alcance"
                 min="0"
                 placeholder="0"
+                value={aeronave.alcance}
+                onChange={(e) =>
+                  setAeronave({
+                    ...aeronave,
+                    alcance: Number(e.target.value),
+                  })
+                }
               />
             </div>
           </div>
 
-          <button type="button" className={Style.submitButton}>
+          <button
+            type="button"
+            className={Style.submitButton}
+            onClick={() => console.log(aeronave)}
+          >
             Cadastrar Aeronave
           </button>
         </form>

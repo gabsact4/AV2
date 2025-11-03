@@ -162,6 +162,132 @@
   border-radius: 8px;
   font-size: 14px;
 }
+/* === MODAL === */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 400px;
+  max-width: 90%;
+  padding: 25px 30px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  animation: slideDown 0.3s ease-in-out;
+}
+
+.modal h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #2db6c0;
+}
+
+.modal label {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+  margin-top: 8px;
+}
+
+.modal input,
+.modal select {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1.5px solid #ccc;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.modal input:focus,
+.modal select:focus {
+  border-color: #2db6c0;
+  box-shadow: 0 0 0 3px rgba(45, 182, 192, 0.2);
+}
+
+/* Botões do modal */
+.modalButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.salvar {
+  background-color: #2db6c0;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.salvar:hover {
+  background-color: #24949c;
+}
+
+.cancelar {
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease;
+}
+
+.cancelar:hover {
+  background-color: #bdbdbd;
+}
+
+/* === Animações === */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsividade */
+@media (max-width: 500px) {
+  .modal {
+    width: 90%;
+    padding: 20px;
+  }
+
+  .modalButtons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .salvar,
+  .cancelar {
+    width: 100%;
+  }
+}
+
 
 @media (max-width: 768px) {
     .pagina {

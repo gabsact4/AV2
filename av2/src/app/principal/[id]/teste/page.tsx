@@ -18,13 +18,8 @@ export default function TestesAeronavePage() {
   }, []);
 
   const abrirTeste = (nomeTeste: string) => {
-    if (userRole === 'gerente') {
       setTesteAtivo(nomeTeste);
-    } else {
-      alert("Apenas gerentes podem executar testes.");
-    }
   };
-
   const fecharTeste = () => {
     setTesteAtivo(null);
   };

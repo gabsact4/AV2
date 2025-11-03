@@ -23,7 +23,6 @@ export default function Detalhes() {
 
       <div className={Style.conteudo}>
         <div className={StyleButton.page}>
-          {/* Seleção de responsável */}
           <div
             style={{
               marginBottom: "20px",
@@ -93,7 +92,7 @@ export default function Detalhes() {
               Gerenciar Peças
             </button>
             
-            {userRole === 'gerente' && (
+            {userRole === 'tecnico' && (
               <button 
                 className={StyleButton.button} 
                 onClick={() => router.push(`/principal/${naveId}/teste`)}
@@ -102,9 +101,8 @@ export default function Detalhes() {
               </button>
             )}
             
-            {userRole === 'funcionario' && (
               <button className={StyleButton.button}>Avançar Etapa</button>
-            )}
+            
           </div>
 
           <div

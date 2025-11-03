@@ -14,8 +14,6 @@ export default function Login() {
 
     if (usuario === "admin" && senha === "admin123") {
       userRole = 'administrador';
-    } else if (usuario === "gerente" && senha === "gerente123") {
-      userRole = 'gerente';
     } else if (usuario === "tecnico" && senha === "tecnico123") {
       userRole = 'tecnico';
     } else if (usuario === "funcionario" && senha === "func123") {

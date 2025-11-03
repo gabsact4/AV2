@@ -5,23 +5,92 @@ import Style from "./Pecas.module.css";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+interface Peca {
+  id: number;
+  nome: string;
+  quantidadeTotal: number;
+  quantidadeInstalada: number;
+  categoria: string;
+  localizacao: string;
+  status: "Completo" | "Faltante";
+}
+
 export default function PecasAeronavePage() {
   const router = useRouter();
-  const [userRole, setUserRole] = useState<string>('');
+  const [userRole, setUserRole] = useState<string>("");
+  const [busca, setBusca] = useState("");
+
+  const [pecas, setPecas] = useState<Peca[]>([
+    {
+      id: 1,
+      nome: "Motor Principal",
+      quantidadeTotal: 1,
+      quantidadeInstalada: 1,
+      categoria: "Mecânica",
+      localizacao: "Hangar",
+      status: "Completo",
+    },
+    {
+      id: 2,
+      nome: "Sensor de Altitude",
+      quantidadeTotal: 2,
+      quantidadeInstalada: 0,
+      categoria: "Elétrica",
+      localizacao: "Almoxarifado",
+      status: "Faltante",
+    },
+    {
+      id: 3,
+      nome: "Hélice",
+      quantidadeTotal: 2,
+      quantidadeInstalada: 1,
+      categoria: "Mecânica",
+      localizacao: "Oficina",
+      status: "Faltante",
+    },
+  ]);
 
   useEffect(() => {
-    const role = localStorage.getItem('userRole') || '';
+    const role = localStorage.getItem("userRole") || "";
     setUserRole(role);
   }, []);
+
+  // Filtragem das peças por busca
+  const pecasFiltradas = pecas.filter(
+    (p) =>
+      p.nome.toLowerCase().includes(busca.toLowerCase()) ||
+      p.categoria.toLowerCase().includes(busca.toLowerCase()) ||
+      p.localizacao.toLowerCase().includes(busca.toLowerCase())
+  );
+
+  // Função para marcar como instalada
+  const marcarInstalada = (id: number) => {
+    setPecas((prev) =>
+      prev.map((p) =>
+        p.id === id
+          ? {
+              ...p,
+              quantidadeInstalada: p.quantidadeTotal,
+              status: "Completo",
+            }
+          : p
+      )
+    );
+  };
+
+  // Função para remover peça
+  const removerPeca = (id: number) => {
+    setPecas((prev) => prev.filter((p) => p.id !== id));
+  };
 
   return (
     <div className={Style.pagina}>
       <Navbar />
 
       <div className={Style.botoesTopo}>
-        {userRole === 'gerente' && (
-          <button 
-            className={Style.botaoTeste} 
+        {userRole === "gerente" && (
+          <button
+            className={Style.botaoTeste}
             onClick={() => router.push("/principal/1/teste")}
           >
             Ir para Testes
@@ -32,28 +101,10 @@ export default function PecasAeronavePage() {
 
       <div className={Style.conteudo}>
         <div className={Style.header}>
-          <button 
-            className={Style.botaoVoltar} 
-            onClick={() => router.back()}
-          >
+          <button className={Style.botaoVoltar} onClick={() => router.back()}>
             ← Voltar
           </button>
           <h1 className={Style.titulo}>Peças da Aeronave: XP-01</h1>
-        </div>
-
-        <div className={Style.stats}>
-          <div className={Style.statCard}>
-            <h3>Total de Peças</h3>
-            <p className={Style.statNumber}>10</p>
-          </div>
-          <div className={Style.statCard}>
-            <h3>Peças Faltantes</h3>
-            <p className={Style.statNumber}>3</p>
-          </div>
-          <div className={Style.statCard}>
-            <h3>Peças Completas</h3>
-            <p className={Style.statNumber}>7</p>
-          </div>
         </div>
 
         <div className={Style.formContainer}>
@@ -77,39 +128,53 @@ export default function PecasAeronavePage() {
         </div>
 
         <div className={Style.buscaContainer}>
-          <input type="text" placeholder="Buscar peças..." className={Style.inputBusca} />
+          <input
+            type="text"
+            placeholder="Buscar peças..."
+            className={Style.inputBusca}
+            value={busca}
+            onChange={(e) => setBusca(e.target.value)}
+          />
         </div>
 
         <div className={Style.listaPecas}>
-          <h2>Peças da Aeronave (3)</h2>
+          <h2>Peças da Aeronave ({pecasFiltradas.length})</h2>
           <div className={Style.gridPecas}>
-            <div className={`${Style.cardPeca} ${Style.completa}`}>
-              <h3>Motor Principal</h3>
-              <div className={Style.infoPeca}>
-                <p><strong>Categoria:</strong> Mecânica</p>
-                <p><strong>Localização:</strong> Hangar</p>
-                <p><strong>Quantidade:</strong> 1 / 1</p>
-                <p><strong>Status:</strong> <span className={`${Style.status} ${Style.statusCompleto}`}>Completo</span></p>
+            {pecasFiltradas.map((p) => (
+              <div
+                key={p.id}
+                className={`${Style.cardPeca} ${p.status === "Completo" ? Style.completa : Style.faltante}`}
+              >
+                <h3>{p.nome}</h3>
+                <div className={Style.infoPeca}>
+                  <p><strong>Categoria:</strong> {p.categoria}</p>
+                  <p><strong>Localização:</strong> {p.localizacao}</p>
+                  <p>
+                    <strong>Quantidade:</strong> {p.quantidadeInstalada} / {p.quantidadeTotal}
+                  </p>
+                  <p>
+                    <strong>Status:</strong>{" "}
+                    <span
+                      className={`${Style.status} ${
+                        p.status === "Completo" ? Style.statusCompleto : Style.statusFaltante
+                      }`}
+                    >
+                      {p.status}
+                    </span>
+                  </p>
+                </div>
+                {userRole === "administrador" || userRole === "Tecnico" ? (
+                  <div className={Style.acoes}>
+                    <button className={Style.botaoInstalar} onClick={() => marcarInstalada(p.id)}>
+                      Marcar como Instalada
+                    </button>
+                    <button className={Style.botaoRemover} onClick={() => removerPeca(p.id)}>
+                      Remover
+                    </button>
+                  </div>
+                ) : null}
               </div>
-              <div className={Style.acoes}>
-                <button className={Style.botaoInstalar}>Marcar como Instalada</button>
-                <button className={Style.botaoRemover}>Remover</button>
-              </div>
-            </div>
-
-            <div className={`${Style.cardPeca} ${Style.faltante}`}>
-              <h3>Sensor de Altitude</h3>
-              <div className={Style.infoPeca}>
-                <p><strong>Categoria:</strong> Elétrica</p>
-                <p><strong>Localização:</strong> Almoxarifado</p>
-                <p><strong>Quantidade:</strong> 0 / 2</p>
-                <p><strong>Status:</strong> <span className={`${Style.status} ${Style.statusFaltante}`}>Faltante</span></p>
-              </div>
-              <div className={Style.acoes}>
-                <button className={Style.botaoInstalar}>Marcar como Instalada</button>
-                <button className={Style.botaoRemover}>Remover</button>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </div>
