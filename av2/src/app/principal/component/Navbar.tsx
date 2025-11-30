@@ -19,7 +19,8 @@ function Navbar() {
         <ul className={Style.navMenu}>
           <li><Link href="/principal">Início</Link></li>
           <li><Link href="../principal/funcionarios">Funcionários</Link></li>
-          {(userRole === 'administrador' || userRole === 'tecnico') && (
+          <li><Link href="../principal/metricas">Metricas</Link></li>
+          {(userRole === 'admin' || userRole === 'tecnico') && (
             <li><Link href="../principal/Aeronave">Aeronaves</Link></li>
           )}
           <li><Link href="/">Sair</Link></li>

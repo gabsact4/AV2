@@ -493,6 +493,20 @@
     transform: translateY(-2px);
 }
 
+.botaoRecarregar {
+  background: #007bff;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 10px;
+}
+
+.botaoRecarregar:hover {
+  background: #0056b3;
+}
+
 @media (max-width: 768px) {
     .conteudo {
         padding: 10px;

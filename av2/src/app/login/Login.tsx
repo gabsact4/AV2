@@ -7,30 +7,65 @@ import { useRouter } from "next/navigation";
 export default function Login() {
   const [usuario, setUsuario] = useState("");
   const [senha, setSenha] = useState("");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const fazerLogin = () => {
-    let userRole = 'funcionario';
-
-    if (usuario === "admin" && senha === "admin123") {
-      userRole = 'administrador';
-    } else if (usuario === "tecnico" && senha === "tecnico123") {
-      userRole = 'tecnico';
-    } else if (usuario === "funcionario" && senha === "func123") {
-      userRole = 'funcionario';
-    } else {
-      alert("Credenciais inválidas! Use: admin/admin123, gerente/gerente123, tecnico/tecnico123, funcionario/func123");
+  const fazerLogin = async () => {
+    if (!usuario || !senha) {
+      alert("Preencha usuário e senha.");
       return;
     }
 
-    localStorage.setItem('userRole', userRole);
-    localStorage.setItem('userName', usuario);
+    setLoading(true);
 
-    router.push("/principal");
+    try {
+      const response = await fetch("http://localhost:3001/api/login", {
+        method: "POST",
+        headers: { 
+          "Content-Type": "application/json" 
+        },
+        body: JSON.stringify({
+          usuario: usuario,
+          senha: senha
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert(data.error || "Usuário ou senha inválidos!");
+        return;
+      }
+
+      if (data.user) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("userId", data.user.id.toString());
+        localStorage.setItem("userName", data.user.name);
+        localStorage.setItem("userRole", data.user.role);
+        localStorage.setItem("username", data.user.username);
+
+        console.log("Login bem-sucedido:", {
+          id: data.user.id,
+          name: data.user.name,
+          role: data.user.role,
+          username: data.user.username
+        });
+
+        router.push("/principal");
+      } else {
+        alert("Dados de usuário não encontrados na resposta.");
+      }
+
+    } catch (error) {
+      console.error("Erro ao fazer login:", error);
+      alert("Erro ao conectar com o servidor.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       fazerLogin();
     }
   };
@@ -49,6 +84,7 @@ export default function Login() {
           onChange={(e) => setUsuario(e.target.value)}
           onKeyPress={handleKeyPress}
           placeholder="Digite seu usuário"
+          disabled={loading}
         />
       </div>
 
@@ -62,15 +98,24 @@ export default function Login() {
           onChange={(e) => setSenha(e.target.value)}
           onKeyPress={handleKeyPress}
           placeholder="Digite sua senha"
+          disabled={loading}
         />
       </div>
 
       <button 
         className={styles.button} 
         onClick={fazerLogin}
+        disabled={loading}
       >
-        Entrar
+        {loading ? "Entrando..." : "Entrar"}
       </button>
+
+      <div className={styles.credentials}>
+        <p><strong>Credenciais de teste:</strong></p>
+        <p>Admin: admin / admin123</p>
+        <p>Engenheiro: engenheiro1 / eng123</p>
+        <p>Operador: operador1 / op123</p>
+      </div>
     </div>
   );
 }
